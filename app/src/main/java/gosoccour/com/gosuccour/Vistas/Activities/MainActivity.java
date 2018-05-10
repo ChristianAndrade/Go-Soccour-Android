@@ -1,5 +1,6 @@
 package gosoccour.com.gosuccour.Vistas.Activities;
 
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 
 import gosoccour.com.gosuccour.R;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navview);
+       // imageView = (ImageView) findViewById(R.id.)
 
         setFragmentByDefault();
 
@@ -42,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.menu_inicio:
-                        fragment = new MicuentaFragment();
+                        fragment = new InicioFragment();
                         fragmentTransaction = true;
                         break;
                     case R.id.menu_cuenta:
-                        fragment = new InicioFragment();
+                        fragment = new MicuentaFragment();
                         fragmentTransaction = true;
                         break;
                     case R.id.menu_info:
