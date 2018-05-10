@@ -17,6 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Vistas.Activities.SplashActivity">
+        	<action></action>
+
+
 
 
         </activity>
