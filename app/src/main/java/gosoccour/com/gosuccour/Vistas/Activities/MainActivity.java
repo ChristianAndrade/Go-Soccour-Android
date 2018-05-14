@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFragmentByDefault(){
-        changeFragment(new MicuentaFragment(), navigationView.getMenu().getItem(0));
+        changeFragment(new InicioFragment(), navigationView.getMenu().getItem(0));
 
     }
 

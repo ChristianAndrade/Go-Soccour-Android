@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="gosoccour.com.gosuccour.Vistas.Activities.SplashActivity"
-    android:background="@color/colorPrimary">
+    android:background="@android:color/black">
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        app:srcCompat="@drawable/logo"
+        app:srcCompat="@drawable/logo_black"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
