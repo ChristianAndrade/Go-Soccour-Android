@@ -22,9 +22,10 @@
             android:layout_centerInParent="true"/>
 
     </RelativeLayout>
-    
-    
+
+
     <GridLayout
+        android:id="@+id/gridInicio"
         android:columnCount="2"
         android:rowCount="2"
         android:alignmentMode="alignMargins"
@@ -63,7 +64,7 @@
 
 
                 <ImageView
-                    android:src="@drawable/mantenimiento"
+                    android:src="@drawable/servicio_mantenimiento_icon"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -106,7 +107,7 @@
 
 
                 <ImageView
-                    android:src="@drawable/emergency"
+                    android:src="@drawable/servicio_emergencia_icon"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -155,7 +156,7 @@
 
 
                 <ImageView
-                    android:src="@drawable/rev"
+                    android:src="@drawable/servicio_revision_icon"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -198,7 +199,7 @@
 
 
                 <ImageView
-                    android:src="@drawable/checklist"
+                    android:src="@drawable/servicio_itv_icon"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
