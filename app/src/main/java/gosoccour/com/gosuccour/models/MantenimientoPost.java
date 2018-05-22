@@ -9,7 +9,7 @@ import java.util.List;
  * Created by alguien on 05/17/2018.
  */
 
-public class mantenimientoPost {
+public class MantenimientoPost {
 
     @SerializedName("id")
     @Expose

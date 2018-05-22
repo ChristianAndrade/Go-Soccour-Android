@@ -48,7 +48,7 @@ public class InicioFragment extends Fragment {
         mantenimiento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), mantenimientoActivity.class );
+                Intent intent = new Intent(getActivity(), MantenimientoActivity.class );
                 startActivity(intent);
                 Toast.makeText(getActivity(), "servicio_mantenimiento_icon", Toast.LENGTH_SHORT).show();
 

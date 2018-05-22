@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gosoccour.com.gosuccour.Vistas.Activities.mantenimientoActivity">
+    tools:context="gosoccour.com.gosuccour.Vistas.Activities.MantenimientoActivity">
 
 
 
@@ -471,9 +471,14 @@
         </GridLayout>
 
 
-
+        <TextView
+            android:id="@+id/postSend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10px"/>
 
     </LinearLayout>
+
 
 
 
@@ -489,6 +494,9 @@
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_action_name" />
+
+
+
 
 
 

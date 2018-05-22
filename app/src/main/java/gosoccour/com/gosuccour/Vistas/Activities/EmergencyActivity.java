@@ -6,7 +6,7 @@ import android.os.Bundle;
 import gosoccour.com.gosuccour.R;
 
 
-public class emergencyActivity extends AppCompatActivity {
+public class EmergencyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

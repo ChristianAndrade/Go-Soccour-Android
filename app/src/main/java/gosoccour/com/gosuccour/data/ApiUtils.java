@@ -10,7 +10,7 @@ public class ApiUtils {
 
     private ApiUtils() {}
 
-    public static final String BASE_URL = "localhost:8080/";
+    public static final String BASE_URL = "http://jsonplaceholder.typicode.com/";
 
     public static APIService getAPIService() {
 

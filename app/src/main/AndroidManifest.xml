@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="gosoccour.com.gosuccour" >
+    package="gosoccour.com.gosuccour">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,31 +10,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-
-        <activity android:name=".Vistas.Activities.MainActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".Vistas.Activities.MainActivity">
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Vistas.Activities.SplashActivity">
-
-        </activity>
-
-        <activity android:name=".Vistas.Activities.mantenimientoActivity"
-                  android:theme="@style/normalTheme">
-
-        </activity>
-
-        <activity android:name=".Vistas.Activities.emergencyActivity" >
-
-        </activity>
-
-
+        <activity android:name=".Vistas.Activities.SplashActivity"></activity>
+        <activity
+            android:name=".Vistas.Activities.MantenimientoActivity"
+            android:theme="@style/normalTheme"></activity>
+        <activity android:name=".Vistas.Activities.EmergencyActivity"></activity>
     </application>
 
 </manifest>

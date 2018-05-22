@@ -5,10 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +21,13 @@ import gosoccour.com.gosuccour.R;
 import gosoccour.com.gosuccour.data.ApiUtils;
 import gosoccour.com.gosuccour.interfaces.APIService;
 import gosoccour.com.gosuccour.models.Task;
-import gosoccour.com.gosuccour.models.mantenimientoPost;
+import gosoccour.com.gosuccour.models.MantenimientoPost;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class mantenimientoActivity extends AppCompatActivity {
+public class MantenimientoActivity extends AppCompatActivity {
 
    /*
     int opcion = 0;
@@ -33,6 +40,11 @@ public class mantenimientoActivity extends AppCompatActivity {
     private List<Task> tasks;
     private Task [] tasca;
     private FloatingActionButton fab;
+    private MantenimientoPost mantenimientoPost;
+
+
+    //prueba
+    TextView postSend;
 
     //API
     private APIService apiService;
@@ -49,6 +61,10 @@ public class mantenimientoActivity extends AppCompatActivity {
 
         gridMant = (GridLayout) findViewById(R.id.gridMantenimiento);
 
+        //prueba
+        postSend = (TextView) findViewById(R.id.postSend);
+
+
         //accions dels cardView
         setEvents(gridMant);
 
@@ -58,8 +74,13 @@ public class mantenimientoActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(MantenimientoActivity.this, "funka 1", Toast.LENGTH_SHORT).show();
                 // Click action
-                Toast.makeText(mantenimientoActivity.this, "Hecho!!", Toast.LENGTH_SHORT).show();
+                mantenimientoPost =  new MantenimientoPost();
+                mantenimientoPost.setId(ID);
+                mantenimientoPost.setTask(tasks);
+
+                sendPost(mantenimientoPost);
 
 
 
@@ -69,9 +90,35 @@ public class mantenimientoActivity extends AppCompatActivity {
 
     }
 
-    public void sendPost(mantenimientoPost post){
-        apiService.savePostMantenimiento(post).
+    public void sendPost(MantenimientoPost post){
 
+
+
+        apiService.savePostMantenimiento(post).enqueue(new Callback<MantenimientoPost>() {
+            @Override
+            public void onResponse(Call<MantenimientoPost> call, Response<MantenimientoPost> response) {
+                Toast.makeText(MantenimientoActivity.this, "funka 2", Toast.LENGTH_SHORT).show();
+                if(response.isSuccessful()) {
+                    Log.e("Success", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
+                    showResponse(new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
+                    Toast.makeText(MantenimientoActivity.this, "Enviado!!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MantenimientoPost> call, Throwable t) {
+                Toast.makeText(MantenimientoActivity.this, "Error al enviar!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void showResponse(String response) {
+        if(postSend.getVisibility() == View.GONE) {
+            postSend.setVisibility(View.VISIBLE);
+        }
+        postSend.setText(response);
     }
 
 

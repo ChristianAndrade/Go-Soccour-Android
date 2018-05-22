@@ -1,13 +1,13 @@
 package gosoccour.com.gosuccour.interfaces;
 
-import android.database.Observable;
 
 import gosoccour.com.gosuccour.models.Task;
-import gosoccour.com.gosuccour.models.mantenimientoPost;
+import gosoccour.com.gosuccour.models.MantenimientoPost;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import rx.Observable;
 
 /**
  * Created by Mohamed on 05/17/2018.
@@ -16,7 +16,6 @@ import retrofit2.http.POST;
 public interface APIService {
 
     @POST("/posts")
-    @FormUrlEncoded
-    Observable<Task> savePostMantenimiento(@Body mantenimientoPost post);
+    Call<MantenimientoPost> savePostMantenimiento(@Body MantenimientoPost post);
 
 }
