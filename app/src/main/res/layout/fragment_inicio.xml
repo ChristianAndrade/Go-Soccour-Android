@@ -43,7 +43,7 @@
         <!-- columna 1-->
 
         <android.support.v7.widget.CardView
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
@@ -86,7 +86,7 @@
         <!-- columna 2-->
 
         <android.support.v7.widget.CardView
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
@@ -135,7 +135,7 @@
         <!-- columna 1-->
 
         <android.support.v7.widget.CardView
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
@@ -178,7 +178,7 @@
         <!-- columna 2-->
 
         <android.support.v7.widget.CardView
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"

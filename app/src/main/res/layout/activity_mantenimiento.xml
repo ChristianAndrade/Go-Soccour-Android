@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="gosoccour.com.gosuccour.Vistas.Activities.mantenimientoActivity">
+
+
+
+    <ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -13,13 +21,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200px">
+        android:layout_height="150px">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mantenimiento"
-            android:textSize="34sp"
+            android:text="Que mantenimiento desea realizar en su vehiculo?"
+            android:textStyle="bold"
+            android:textSize="15sp"
             android:layout_centerInParent="true"/>
 
     </RelativeLayout>
@@ -33,7 +42,7 @@
             android:alignmentMode="alignMargins"
             android:columnCount="2"
             android:columnOrderPreserved="false"
-            android:padding="14dp"
+            android:padding="0dp"
             android:rowCount="5">
 
             <!-- Dirección   -->
@@ -42,12 +51,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+
                 app:cardElevation="8dp"
 
                 >
@@ -87,12 +96,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -130,12 +138,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -173,12 +180,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -216,12 +222,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -259,12 +264,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -285,7 +289,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ITV"
+                        android:text="Bateria"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="15sp"
@@ -302,12 +306,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -345,12 +348,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -388,12 +390,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -431,12 +432,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_rowWeight="1"
-                android:backgroundTint="@color/colorPrimaryDark"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardElevation="8dp">
 
 
@@ -470,9 +470,32 @@
 
         </GridLayout>
 
+
+
+
     </LinearLayout>
 
+
+
 </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_action_name" />
+
+
+
+
+</RelativeLayout>
+
+
 
 
 

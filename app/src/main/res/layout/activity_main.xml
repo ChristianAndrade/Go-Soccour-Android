@@ -16,7 +16,7 @@
         <include android:id="@+id/toolbar"
             layout="@layout/toolbar"/>
 
-        <!-- The main content view -->
+        <!-- Contingut principal -->
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
