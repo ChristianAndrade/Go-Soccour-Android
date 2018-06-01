@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/userName"
+        android:text="Hello User !"
+        android:layout_marginTop="20dp"
+        android:textSize="30dp"
+        android:textColor="#DA3E9E"
+        android:gravity="center_horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:background="@drawable/audi"
+        android:textSize="10dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp" />
+
+    <EditText
+        android:id="@+id/userEditT"
+        android:textSize="15dp"
+        android:textColor="#000"
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/btnListClients"
+        android:text="Show List"
+        android:background="@color/pink"
+        android:padding="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:id="@+id/mylist"
+        android:layout_weight="8"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+</LinearLayout>

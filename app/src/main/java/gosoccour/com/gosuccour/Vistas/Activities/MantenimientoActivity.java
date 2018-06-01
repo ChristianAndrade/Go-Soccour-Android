@@ -1,6 +1,7 @@
 package gosoccour.com.gosuccour.Vistas.Activities;
 
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,8 +21,8 @@ import java.util.List;
 import gosoccour.com.gosuccour.R;
 import gosoccour.com.gosuccour.data.ApiUtils;
 import gosoccour.com.gosuccour.interfaces.APIService;
-import gosoccour.com.gosuccour.models.Task;
-import gosoccour.com.gosuccour.models.MantenimientoPost;
+import gosoccour.com.gosuccour.models.Maintenance;
+import gosoccour.com.gosuccour.models.Products;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,13 +35,13 @@ public class MantenimientoActivity extends AppCompatActivity {
     ImageView imageCambiar;
      */
 
-   final static String ID = "mant";
+    final static String ID = "mant";
 
     private GridLayout gridMant;
-    private List<Task> tasks;
-    private Task [] tasca;
+    private List<Products> tasks;
+    private Products[] tasca;
     private FloatingActionButton fab;
-    private MantenimientoPost mantenimientoPost;
+    private Maintenance mantenimientoPost;
 
 
     //prueba
@@ -59,6 +60,7 @@ public class MantenimientoActivity extends AppCompatActivity {
 
         tasks= new ArrayList<>();
 
+        generateTasks();
         gridMant = (GridLayout) findViewById(R.id.gridMantenimiento);
 
         //prueba
@@ -75,14 +77,36 @@ public class MantenimientoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MantenimientoActivity.this, "funka 1", Toast.LENGTH_SHORT).show();
-                // Click action
-                mantenimientoPost =  new MantenimientoPost();
-                mantenimientoPost.setId(ID);
-                mantenimientoPost.setTask(tasks);
 
+
+                /*
+                Codigo para que el usuario pueda seleccionar un servicio del mismo tipo por coche
+                 */
+
+                // Obtenir el id de la factura
+                long idFactura=getIntent().getLongExtra("idFactura",0);
+                ArrayList<String> servicios = new ArrayList<>();
+                 servicios =getIntent().getStringArrayListExtra("servicios");
+                //añadir el nombre del servicio
+                servicios.add("mantenimiento");
+
+
+
+
+                Toast.makeText(MantenimientoActivity.this, "id factura: "+idFactura, Toast.LENGTH_SHORT).show();
+                mantenimientoPost =  new Maintenance(idFactura,13.0,tasks);
+                /*
+                mantenimientoPost.setId(ID);
+                mantenimientoPost.setListProducts(tasks);
+*/
                 sendPost(mantenimientoPost);
 
-
+                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                i.putExtra("idFactura",idFactura);
+                //pasar arraylist de servicios usados para no volver a dejar al
+                // usuario solicitar el mismo servicio para el mismo coche
+                i.putStringArrayListExtra("servicios",servicios);
+               // startActivity(i);
 
             }
         });
@@ -90,13 +114,13 @@ public class MantenimientoActivity extends AppCompatActivity {
 
     }
 
-    public void sendPost(MantenimientoPost post){
+    public void sendPost(Maintenance post){
 
 
 
-        apiService.savePostMantenimiento(post).enqueue(new Callback<MantenimientoPost>() {
+        apiService.savePostMantenimiento(post).enqueue(new Callback<Maintenance>() {
             @Override
-            public void onResponse(Call<MantenimientoPost> call, Response<MantenimientoPost> response) {
+            public void onResponse(Call<Maintenance> call, Response<Maintenance> response) {
                 Toast.makeText(MantenimientoActivity.this, "funka 2", Toast.LENGTH_SHORT).show();
                 if(response.isSuccessful()) {
                     Log.e("Success", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
@@ -107,7 +131,7 @@ public class MantenimientoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MantenimientoPost> call, Throwable t) {
+            public void onFailure(Call<Maintenance> call, Throwable t) {
                 Toast.makeText(MantenimientoActivity.this, "Error al enviar!!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -123,182 +147,203 @@ public class MantenimientoActivity extends AppCompatActivity {
 
 
     private void setEvents(GridLayout gridMant) {
-        tasca=new Task[10];
-        for (int i =0; i<tasca.length ; i++){
-            tasca[i]=new Task();
-        }
+
         for(int i = 0; i < gridMant.getChildCount(); i++){
 
             final CardView cardView = (CardView) gridMant.getChildAt(i);
 
             final int finalI = i;
             cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(finalI ==0){
-                            tasca[finalI].setId("dir");
-                            if(item1 != null && item1){
+                @Override
+                public void onClick(View view) {
+                    if(finalI ==0){
 
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item1=false;
-                                //afegeix la tasca a la llista de tasques
-                                tasks.remove(tasca[finalI]);
+                        if(item1 != null && item1){
 
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item1=false;
+                            //afegeix la tasca a la llista de tasques
+                            tasks.remove(tasca[finalI]);
 
-                                //S'elimina de la llista
-                                tasks.add(tasca[finalI]);
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
 
-                                item1=true;
-                            }
+                            //S'elimina de la llista
+                            tasks.add(tasca[finalI]);
 
-
-                        }else if (finalI == 1){
-                            tasca[finalI].setId("fre");
-                            if(item2 != null && item2){
-
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                tasks.remove(tasca[finalI]);
-                                item2=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-
-                                tasks.add(tasca[finalI]);
-                                item2=true;
-
-                            }
-
-                        }else if (finalI == 2) {
-                            tasca[finalI].setId("sus");
-
-                            if(item3 != null && item3){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                tasks.remove(tasca[finalI]);
-                                item3=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item3=true;
-
-                            }
-
-                        }else if (finalI == 3){
-                            tasca[finalI].setId("neu");
-                            if(item4 != null && item4){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item4=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item4=true;
-
-                            }
-
-                        }else if (finalI == 4) {
-                            tasca[finalI].setId("luc");
-
-                            if(item5 != null && item5){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item5=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item5=true;
-
-                            }
-
-                        }else if (finalI == 5) {
-                            tasca[finalI].setId("bat");
-                            if(item6 != null && item6){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item6=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item6=true;
-
-                            }
-
-
-                        }else if (finalI == 6) {
-                            tasca[finalI].setId("niv");
-                            if(item7 != null && item7){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item7=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item7=true;
-
-                            }
-
-                        }else if (finalI == 7) {
-                            tasca[finalI].setId("air");
-
-                            if(item8 != null && item8){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item8=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item8=true;
-
-                            }
-
-                        }else if (finalI == 8) {
-                            tasca[finalI].setId("lun");
-                            if(item9 != null && item9){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item9=false;
-
-
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item9=true;
-                            }
-
-                        }else if (finalI == 9) {
-                            tasca[finalI].setId("iny");
-                            if(item10 != null && item10){
-                                tasks.remove(tasca[finalI]);
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                item10=false;
-
-                            } else {
-                                cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                                tasks.add(tasca[finalI]);
-                                item10=true;
-
-
-                            }
+                            item1=true;
                         }
 
-                        for (Task tasa: tasks) {
-                            System.out.print(tasa.getId()+" ");
+
+                    }else if (finalI == 1){
+
+                        if(item2 != null && item2){
+
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            tasks.remove(tasca[finalI]);
+                            item2=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+
+                            tasks.add(tasca[finalI]);
+                            item2=true;
+
                         }
-                        System.out.println("\n");
+
+                    }else if (finalI == 2) {
+
+
+                        if(item3 != null && item3){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            tasks.remove(tasca[finalI]);
+                            item3=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item3=true;
+
+                        }
+
+                    }else if (finalI == 3){
+
+                        if(item4 != null && item4){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item4=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item4=true;
+
+                        }
+
+                    }else if (finalI == 4) {
+
+
+                        if(item5 != null && item5){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item5=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item5=true;
+
+                        }
+
+                    }else if (finalI == 5) {
+
+                        if(item6 != null && item6){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item6=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item6=true;
+
+                        }
+
+
+                    }else if (finalI == 6) {
+
+                        if(item7 != null && item7){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item7=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item7=true;
+
+                        }
+
+                    }else if (finalI == 7) {
+
+
+                        if(item8 != null && item8){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item8=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item8=true;
+
+                        }
+
+                    }else if (finalI == 8) {
+
+                        if(item9 != null && item9){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item9=false;
+
+
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item9=true;
+                        }
+
+                    }else if (finalI == 9) {
+                        if(item10 != null && item10){
+                            tasks.remove(tasca[finalI]);
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            item10=false;
+
+                        } else {
+                            cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
+                            tasks.add(tasca[finalI]);
+                            item10=true;
+
+
+                        }
                     }
-                });
+
+                    for (Products tasa: tasks) {
+                        System.out.print(tasa.getId()+" ");
+                    }
+                    System.out.println("\n");
+                }
+            });
 
         }
 
 
     }
+
+
+    public void generateTasks(){
+        tasca=new Products[10];
+        for (int i =0; i<tasca.length ; i++){
+            tasca[i]=new Products();
+        }
+
+        //tasks
+        tasca[0] = new Products(1,"Direction","Revision de sistemas y mecanismos",100);
+        tasca[1] = new Products(2,"Brakes","Cambio de Pastillas y Discos",150);
+        tasca[2] = new Products(3,"Suspension","Revisión y cambio de Amortiguadores",120);
+        tasca[3] = new Products(4,"Pneumatic","Revisión y Camio de Neumaticos",80);
+        tasca[4] = new Products(5,"Lights","Revisión y Camio de luces",90);
+        tasca[5] = new Products(6,"Batery","Revision, Carga, Cambio de bateria",20);
+        tasca[6] = new Products(7,"Levels and Filters","Revisión y cambio de Niveles y Filtros",110);
+        tasca[7] = new Products(8,"Air Conditioner","Revisión del Aire Acondicionado",40);
+        tasca[8] = new Products(9,"Moons and CrystalCleaner","Revisión y cambio de Limpia Cristales",70);
+        tasca[9] = new Products(10,"Injection","Revisión y cambio de Inyectores",120);
+
+
+    }
+
+
+
 }

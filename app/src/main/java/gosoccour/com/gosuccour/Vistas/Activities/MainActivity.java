@@ -1,7 +1,6 @@
 package gosoccour.com.gosuccour.Vistas.Activities;
 
 import android.graphics.Color;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,23 +13,40 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 
+import java.util.ArrayList;
+
 import gosoccour.com.gosuccour.R;
-import gosoccour.com.gosuccour.Vistas.Fragments.InicioFragment;
 import gosoccour.com.gosuccour.Vistas.Fragments.MicuentaFragment;
 
 import gosoccour.com.gosuccour.Vistas.Fragments.InfoFragment;
+import gosoccour.com.gosuccour.Vistas.Fragments.ServiciosFragment;
+import gosoccour.com.gosuccour.data.ApiUtils;
+import gosoccour.com.gosuccour.interfaces.APIService;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ImageView imageView;
+    private APIService apiService;
+    private final String IMAGE_URL= ApiUtils.BASE_URL+"/images";
+    private Long id;
+    private ArrayList<String> servicios; //servicios usados
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbar();
+
+        //id factura pasada per les activitys dels serveis tramitats
+        //es per no tornar a la activity coches
+        id=getIntent().getLongExtra("idFactura", 10);
+        servicios=new ArrayList<String>();
+        servicios=getIntent().getStringArrayListExtra("servicios");
+
+        //borrar sombra
+        getSupportActionBar().setElevation(0);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navview);
@@ -47,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.menu_inicio:
-                        fragment = new InicioFragment();
+                        fragment = new ServiciosFragment();
                         fragmentTransaction = true;
                         break;
                     case R.id.menu_cuenta:
@@ -79,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFragmentByDefault(){
-        changeFragment(new InicioFragment(), navigationView.getMenu().getItem(0));
+        changeFragment(new ServiciosFragment(), navigationView.getMenu().getItem(0));
 
     }
 
@@ -104,5 +120,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //Funcio per enviar la id al fragment
+    public Long getIdFactura() {
+        return id;
+    }
+
+    public ArrayList<String> getServicios(){
+        return servicios;
     }
 }

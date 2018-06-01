@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    tools:context="gosoccour.com.gosuccour.Vistas.Fragments.FacturasFragment">
+
+
+        <TextView
+            android:id="@+id/productos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facturas"
+            />
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precios"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total"
+            android:layout_below="@id/precio"
+            android:layout_alignParentRight="true"
+            />
+
+
+</RelativeLayout>

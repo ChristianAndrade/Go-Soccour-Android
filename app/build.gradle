@@ -21,6 +21,10 @@ android {
             force 'com.android.support:support-annotations:26.1.0'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -46,6 +50,9 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 }

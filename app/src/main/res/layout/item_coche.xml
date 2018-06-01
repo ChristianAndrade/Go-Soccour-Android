@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/espacio1">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/texto_modelo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modelo: Opel"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/texto_matricula"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Matricula: XS2017"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/texto_neumaticos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Neumaticos: Radial RA08 "
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/texto_motor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motor: 1.4 Turbo ECOTEC"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/logoMarca"
+        android:maxHeight="80dp"
+        android:maxWidth="150dp"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/sharp_directions_car_24" />
+
+
+</RelativeLayout>
