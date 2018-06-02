@@ -42,7 +42,7 @@ public class MantenimientoActivity extends AppCompatActivity {
     private Products[] tasca;
     private FloatingActionButton fab;
     private Maintenance mantenimientoPost;
-
+    ArrayList<String> servicios;
 
     //prueba
     TextView postSend;
@@ -85,7 +85,7 @@ public class MantenimientoActivity extends AppCompatActivity {
 
                 // Obtenir el id de la factura
                 long idFactura=getIntent().getLongExtra("idFactura",0);
-                ArrayList<String> servicios = new ArrayList<>();
+
                  servicios =getIntent().getStringArrayListExtra("servicios");
                 //añadir el nombre del servicio
                 servicios.add("mantenimiento");
@@ -106,7 +106,7 @@ public class MantenimientoActivity extends AppCompatActivity {
                 //pasar arraylist de servicios usados para no volver a dejar al
                 // usuario solicitar el mismo servicio para el mismo coche
                 i.putStringArrayListExtra("servicios",servicios);
-               // startActivity(i);
+                startActivity(i);
 
             }
         });

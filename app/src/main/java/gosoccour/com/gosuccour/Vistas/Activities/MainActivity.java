@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         //id factura pasada per les activitys dels serveis tramitats
         //es per no tornar a la activity coches
         id=getIntent().getLongExtra("idFactura", 10);
-        servicios=new ArrayList<String>();
         servicios=getIntent().getStringArrayListExtra("servicios");
 
         //borrar sombra

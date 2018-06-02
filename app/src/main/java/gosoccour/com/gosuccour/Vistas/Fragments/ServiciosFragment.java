@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class ServiciosFragment extends Fragment {
         // Required empty public constructor
     }
     GridLayout gridInicio;
+    Button selecCoche;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +39,8 @@ public class ServiciosFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_servicios, container, false);
 
+        selecCoche =(Button)view.findViewById(R.id.selecCoche);
+        selecCoche.setVisibility(View.GONE);
         gridInicio = (GridLayout) view.findViewById(R.id.gridInicio);
 
         setEvents(gridInicio);
@@ -56,18 +60,28 @@ public class ServiciosFragment extends Fragment {
             servicio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    //Intent para cocheActivity
+                    Intent intentCocheActivity = new Intent(getActivity(), CochesActivity.class);
                     MainActivity activity=(MainActivity)getActivity();
                     Long id=activity.getIdFactura();
                     ArrayList<String> servicios = activity.getServicios();
                     Intent i;
                     if (id==10) {
                         //CochesActivity.class
-                        Intent intent = new Intent(getActivity(), CochesActivity.class);
-                        intent.putExtra("activity", finalI);
-                        startActivity(intent);
+
+                        intentCocheActivity.putExtra("activity", finalI);
+                        startActivity(intentCocheActivity);
                         Toast.makeText(getActivity(), "servicio " + finalI, Toast.LENGTH_SHORT).show();
                     } else{
+                        //si idFactura no es 10, quiere decir que se ha seleccionado coche.
+                        //entonces damos la opcion al usuairo de cambiar de coche
+                        selecCoche.setVisibility(View.VISIBLE);
+                        selecCoche.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startActivity(intentCocheActivity);
+                            }
+                        });
 
                         switch (finalI){
                             case 0:
@@ -77,6 +91,7 @@ public class ServiciosFragment extends Fragment {
                                 }else {
                                     i = new Intent(getActivity(), MantenimientoActivity.class);
                                     i.putExtra("idFactura",id);
+                                    i.putStringArrayListExtra("servicios",servicios);
                                     startActivity(i);
 
                                 }
@@ -92,6 +107,7 @@ public class ServiciosFragment extends Fragment {
 
                                     i = new Intent(getActivity(), RevisionActivity.class);
                                     i.putExtra("idFactura", id);
+                                    i.putStringArrayListExtra("servicios",servicios);
                                     Toast.makeText(getActivity(), "revision", Toast.LENGTH_SHORT).show();
                                     startActivity(i);}
 

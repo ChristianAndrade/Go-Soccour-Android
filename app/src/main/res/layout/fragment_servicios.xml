@@ -15,11 +15,19 @@
     android:layout_height="0dp">
 
     <TextView
+        android:id="@+id/servicios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Servicios"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:layout_centerInParent="true"/>
+    <Button
+        android:id="@+id/selecCoche"
+        android:layout_below="@+id/servicios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:text="Seleccionar otro coche"/>
 
 </RelativeLayout>
 
