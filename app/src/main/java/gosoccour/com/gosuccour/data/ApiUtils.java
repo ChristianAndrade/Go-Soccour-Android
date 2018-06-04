@@ -7,10 +7,9 @@ import gosoccour.com.gosuccour.interfaces.APIService;
  */
 
 public class ApiUtils {
-
+//51.38.232.233
     private ApiUtils() {}
-
-    public static final String BASE_URL = "http://10.0.2.2:8080/";
+    public static final String BASE_URL = "http://51.38.232.233:8080/";
 
     public static APIService getAPIService() {
 

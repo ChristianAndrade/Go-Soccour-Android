@@ -8,11 +8,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ClientInterface {
-    @POST("/api/login")
-    Call<Token> loginCheck(@Query("username") String username, @Query("password")String password);
 
-    @GET("/pg/image")
-    Call<image> getImageProfile(@Query("id") long id);
 
 
 }

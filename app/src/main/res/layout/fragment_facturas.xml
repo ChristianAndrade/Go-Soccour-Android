@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_margin="20dp"
     tools:context="gosoccour.com.gosuccour.Vistas.Fragments.FacturasFragment">
-
+<!--NO IMPLEMENTADO POR FALTA DE TIEMPO-->
 
         <TextView
             android:id="@+id/productos"

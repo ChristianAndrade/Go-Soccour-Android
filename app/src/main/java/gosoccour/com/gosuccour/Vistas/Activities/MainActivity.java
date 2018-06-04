@@ -1,6 +1,8 @@
 package gosoccour.com.gosuccour.Vistas.Activities;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,8 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -22,6 +31,10 @@ import gosoccour.com.gosuccour.Vistas.Fragments.InfoFragment;
 import gosoccour.com.gosuccour.Vistas.Fragments.ServiciosFragment;
 import gosoccour.com.gosuccour.data.ApiUtils;
 import gosoccour.com.gosuccour.interfaces.APIService;
+import gosoccour.com.gosuccour.models.Client;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,29 +42,59 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ImageView imageView;
     private APIService apiService;
-    private final String IMAGE_URL= ApiUtils.BASE_URL+"/images";
-    private Long id;
+    private final String IMAGE_URL= ApiUtils.BASE_URL+"/uploads/";
+    SharedPreferences mSettings;
+    Client cli;
+    SharedPreferences  mPrefs;
+    //extras
+    private Long id; //id de la factura, se pasa por extra
     private ArrayList<String> servicios; //servicios usados
+    private String objetoCoche;
+    private String token;
+
+    //variables de los datos del usuario que se mostraran en el navigation drawer
+    ImageView fotoPerfil;
+    TextView nombreApellidos, correo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setToolbar();
 
+        String client = getIntent().getStringExtra("client");
+        System.out.println(client);
+
+
+        cli=getCliente();
+        System.out.println("Main activity");
+        System.out.println(cli.getSurname());
+        System.out.println(cli.getCity());
+        System.out.println(cli.getCountry());
+
+
+        apiService=ApiUtils.getAPIService();
+        token=getIntent().getStringExtra("token");
+
+        setToolbar();
         //id factura pasada per les activitys dels serveis tramitats
-        //es per no tornar a la activity coches
-        id=getIntent().getLongExtra("idFactura", 10);
+        //datos necesarios para no volver a pasar por la activity coches si ya se ha seleccionado un coche y ya tiene un id factura
+        id=getIntent().getLongExtra("idFactura", Integer.MAX_VALUE);
         servicios=getIntent().getStringArrayListExtra("servicios");
+
+        objetoCoche=getIntent().getStringExtra("car");
 
         //borrar sombra
         getSupportActionBar().setElevation(0);
+        //obtener objeto cliente de sharedpreferences
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navview);
        // imageView = (ImageView) findViewById(R.id.)
 
         setFragmentByDefault();
+        //datos usuairo navDrawer
+        datosNavDrawer();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -72,6 +115,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_info:
                         fragment = new InfoFragment();
                         fragmentTransaction = true;
+                        break;
+                    case R.id.cerrar:
+                        moveTaskToBack(true);
+                        finish();
+                        break;
+                    case R.id.aviso_legal:
+                        Toast.makeText(MainActivity.this, "Aviso Legal", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -128,5 +178,40 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<String> getServicios(){
         return servicios;
+    }
+
+
+    public String getCarData(){
+        return objetoCoche;
+    }
+
+    public void datosNavDrawer(){
+
+
+
+
+        //obtener el header del navigationdrawer
+        View viewNavHeader = navigationView.getHeaderView(0);
+        fotoPerfil=(ImageView) viewNavHeader.findViewById(R.id.fotoPerfil);
+        nombreApellidos=(TextView) viewNavHeader.findViewById(R.id.nombreApellido);
+        correo=(TextView) viewNavHeader.findViewById(R.id.correo);
+
+
+        nombreApellidos.setText(cli.getSurname()+" "+ cli.getLastname());
+        correo.setText(cli.getEmail());
+
+        Bundle extraUrl = getIntent().getExtras();
+        //image1.setImageBitmap(bmp);
+        Picasso.get().load(IMAGE_URL+ cli.getPhoto()).into(fotoPerfil);
+        System.out.println("llegado aqui");
+    }
+
+    public Client getCliente(){
+
+        Gson gson = new Gson();
+        String strObj = getIntent().getStringExtra("client");
+        Client obj = gson.fromJson(strObj, Client.class);
+
+        return obj;
     }
 }

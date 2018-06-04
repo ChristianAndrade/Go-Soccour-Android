@@ -1,6 +1,5 @@
-package gosoccour.com.gosuccour.Location;
+package gosoccour.com.gosuccour.models;
 
-import gosoccour.com.gosuccour.Login.Token;
 
 public class LocationClient {
 

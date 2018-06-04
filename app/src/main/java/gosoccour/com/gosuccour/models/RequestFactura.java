@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by alguien on 05/29/2018.
+ * Created by mohamed on 05/29/2018.
  */
 
 //CLASE Modelo JSON

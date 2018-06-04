@@ -10,10 +10,6 @@ import com.google.gson.annotations.SerializedName;
 public class Coordenadas {
 
 
-    @SerializedName("token")
-    @Expose
-    String token;
-
     @SerializedName("latitude")
     @Expose
     double latitude;
@@ -40,11 +36,4 @@ public class Coordenadas {
         this.longitude = longitude;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

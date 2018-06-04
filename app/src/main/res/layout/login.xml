@@ -1,77 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="50dp"
-    android:background="@color/colorPrimaryDark">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="26dp"
-        android:text="Welcome to Go Succour"
-        android:textColor="#fff"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#fff"
-        android:text="Gu Succour es una asistencia mecanica virtual, con la que no necesitas preocuparte por tu coche, nosotros nos preocupamos por ti. Si ya eres usuario ingresa, sino date de alta en nuestra pagina web."
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
-        />
+    android:layout_height="match_parent"
+    android:background="@drawable/carkeys">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:padding="50dp">
+        <ImageView
+            android:id="@+id/imageLogo"
+            android:layout_marginLeft="-60dp"
+            android:layout_width="360dp"
+            android:layout_height="220dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center">
-
     </LinearLayout>
 
-</LinearLayout>
     <LinearLayout
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <EditText
-            android:drawablePadding="10dp"
-
             android:id="@+id/user"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:hint="USERNAME"/>
-        <EditText
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:drawableLeft="@drawable/ic_person_outline_black_24dp"
             android:drawablePadding="10dp"
+            android:hint="USERNAME"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
+        <EditText
             android:id="@+id/password"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
+            android:drawablePadding="10dp"
+            android:hint="PASSWORD"
             android:inputType="numberPassword"
             android:maxLines="1"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:hint="PASSWORD"/>
-        <Button
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
 
+        <com.spark.submitbutton.SubmitButton
             android:id="@+id/btnSendLogin"
-            android:text="LOGIN IN"
-
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="LOG IN"
+            android:textColor="#0E0D0D"
+            app:sub_btn_duration="200"
+            app:sub_btn_line_color="#4E4A4A"
+            app:sub_btn_tick_color="@color/black"
+            tools:layout_editor_absoluteX="4dp"
+            tools:layout_editor_absoluteY="4dp"
             />
+
     </LinearLayout>
 </LinearLayout>

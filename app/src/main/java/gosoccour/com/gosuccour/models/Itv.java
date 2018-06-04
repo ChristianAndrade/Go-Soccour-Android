@@ -4,18 +4,23 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Itv {
+
     @SerializedName("factura_id")
     @Expose
     private Long id;
-    private Double price;
+    @SerializedName("price")
+    @Expose
+    private Double price=120.0;
+    @SerializedName("year")
+    @Expose
     private String year;
-    private String identify="itv"
+    @SerializedName("identify")
+    @Expose
+    private String identify="itv";
 
-    public Itv(Long id, Double price, String year, String identify) {
+    public Itv(Long id, String year) {
         this.id = id;
-        this.price = price;
         this.year = year;
-        this.identify = identify;
     }
 
     public Long getId() {

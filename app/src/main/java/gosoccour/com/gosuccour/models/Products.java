@@ -12,9 +12,9 @@ public class Products {
 
 
 
-    @SerializedName("ide")
+    @SerializedName("id")
     @Expose
-    int id;
+    Long id;
 
     @SerializedName("name")
     @Expose
@@ -28,7 +28,7 @@ public class Products {
     @Expose
     double price;
 
-    public Products(int id, String name, String description, double price) {
+    public Products(Long id, String name, String description, double price) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -37,11 +37,11 @@ public class Products {
 
     public Products(){}
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

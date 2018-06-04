@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import gosoccour.com.gosuccour.Vistas.Activities.MainActivity;
 import gosoccour.com.gosuccour.adapters.AdaptadorMicuentaCoche;
 import gosoccour.com.gosuccour.R;
 import gosoccour.com.gosuccour.data.ApiUtils;
@@ -44,7 +45,9 @@ public class CochesFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_coches, container, false);
 
+        MainActivity mainActivity=(MainActivity)getActivity();
 
+        int idClient=mainActivity.getCliente().getId();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.cochesRecycler);
         recyclerView.setHasFixedSize(true);
@@ -55,7 +58,7 @@ public class CochesFragment extends Fragment {
 
 
         apiService = ApiUtils.getAPIService();
-        Call<Client> call = apiService.getClient(1);
+        Call<Client> call = apiService.getClient(idClient);
 
         call.enqueue(new Callback<Client>() {
             @Override

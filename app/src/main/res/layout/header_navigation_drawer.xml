@@ -15,7 +15,7 @@
         android:layout_alignParentStart="true">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/nombreApellido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -27,7 +27,7 @@
             />
 
         <TextView
-            android:id="@+id/email"
+            android:id="@+id/correo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
@@ -46,7 +46,7 @@
         android:src="@drawable/perfil"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="38dp"
-        android:id="@+id/circleView"
+        android:id="@+id/fotoPerfil"
         />
 
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package gosoccour.com.gosuccour.Vistas.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,6 @@ import java.util.List;
 import gosoccour.com.gosuccour.R;
 import gosoccour.com.gosuccour.data.ApiUtils;
 import gosoccour.com.gosuccour.interfaces.APIService;
-import gosoccour.com.gosuccour.models.Maintenance;
 import gosoccour.com.gosuccour.models.Plan;
 import gosoccour.com.gosuccour.models.Products;
 import gosoccour.com.gosuccour.models.Revision;
@@ -32,20 +30,31 @@ import retrofit2.Response;
 
 public class RevisionActivity extends AppCompatActivity {
 
+
+    private final String REVISION_HUELLA="revision";
+
+
     private GridLayout gridMant;
     private List<Products> tasks;
-    private Products[] tasca;
+    private Products[] product;
     private FloatingActionButton fab;
     private Revision revisionPost;
     private Plan plan;
     private List<Plan> planList;
-    private int radioElecc;
     private RadioButton radioButton;
     private RadioGroup opciones;
-    ArrayList<String> servicios;
 
-    //prueba
-    TextView postSend;
+    /*
+        Una vez contratado el servicio ya no puede volver a contratarse
+        El ArrayList<String> servicios se pasa alrededor de todas las activities registrando su huella
+        para que puedan ser iniciadas solo una vez
+     */
+    private ArrayList<String> servicios;
+
+
+    private String carData;
+    private String client;
+    private long idFactura;
 
     //API
     private APIService apiService;
@@ -59,11 +68,8 @@ public class RevisionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_revision);
         tasks = new ArrayList<>();
 
-        generateTasks();
+        init();
         gridMant = (GridLayout) findViewById(R.id.gridRevision);
-
-        //prueba
-        postSend = (TextView) findViewById(R.id.postSend);
 
         functionRadioButtons();
 
@@ -77,34 +83,11 @@ public class RevisionActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(RevisionActivity.this, "funka 1", Toast.LENGTH_SHORT).show();
-                // Click action
-
-
-                /*
-                Codigo para que el usuario pueda seleccionar un servicio del mismo tipo por coche
-                 */
-
-                // Obtenir el id de la factura
-                long idFactura=getIntent().getLongExtra("idFactura",0);
-
-                servicios =getIntent().getStringArrayListExtra("servicios");
-                //añadir el nombre del servicio
-                servicios.add("revision");
-
-
-
-
-                Toast.makeText(RevisionActivity.this, "id factura: "+idFactura, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(RevisionActivity.this, "id factura: "+idFactura, Toast.LENGTH_SHORT).show();
                 revisionPost = new Revision( idFactura,13.0,planList, tasks);
                 sendPost(revisionPost);
 
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                i.putExtra("idFactura",idFactura);
-                //pasar arraylist de servicios usados para no volver a dejar al
-                // usuario solicitar el mismo servicio para el mismo coche
-                i.putStringArrayListExtra("servicios",servicios);
-                startActivity(i);
+
 
             }
         });
@@ -152,32 +135,33 @@ public class RevisionActivity extends AppCompatActivity {
     }
 
     public void sendPost(Revision revision) {
-
+        Intent i = new Intent(getApplicationContext(),MainActivity.class);
 
         apiService.savePostRevision(revision).enqueue(new Callback<Revision>() {
             @Override
             public void onResponse(Call<Revision> call, Response<Revision> response) {
-                Toast.makeText(RevisionActivity.this, "funka 2", Toast.LENGTH_SHORT).show();
                 if (response.isSuccessful()) {
                     Log.e("Success", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                    showResponse(new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                    Toast.makeText(RevisionActivity.this, "Enviado!!", Toast.LENGTH_SHORT).show();
+                    servicios.add(REVISION_HUELLA);
+                    Toast.makeText(RevisionActivity.this, "Servicio revision contratado!", Toast.LENGTH_SHORT).show();
+                    //enviar extras
+                    i.putExtra("idFactura",idFactura);
+                    i.putExtra("car",carData);
+                    i.putExtra("client",client);
+                    i.putStringArrayListExtra("servicios",servicios);
+                    startActivity(i);
+
                 }
             }
 
             @Override
             public void onFailure(Call<Revision> call, Throwable t) {
-
+                Toast.makeText(RevisionActivity.this, "Error!, comprueba conexion a internet", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+                startActivity(i);
             }
         });
 
-    }
-
-    public void showResponse(String response) {
-        if (postSend.getVisibility() == View.GONE) {
-            postSend.setVisibility(View.VISIBLE);
-        }
-        postSend.setText(response);
     }
 
 
@@ -197,14 +181,14 @@ public class RevisionActivity extends AppCompatActivity {
 
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item1 = false;
-                            //afegeix la tasca a la llista de tasques
-                            tasks.remove(tasca[finalI]);
+                            //afegeix la product a la llista de tasques
+                            tasks.remove(product[finalI]);
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
 
                             //S'elimina de la llista
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
 
                             item1 = true;
                         }
@@ -215,13 +199,13 @@ public class RevisionActivity extends AppCompatActivity {
                         if (item2 != null && item2) {
 
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             item2 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
 
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item2 = true;
 
                         }
@@ -230,14 +214,14 @@ public class RevisionActivity extends AppCompatActivity {
 
 
                         if (item3 != null && item3) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             item3 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item3 = true;
 
                         }
@@ -245,13 +229,13 @@ public class RevisionActivity extends AppCompatActivity {
                     } else if (finalI == 3) {
 
                         if (item4 != null && item4) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item4 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item4 = true;
 
                         }
@@ -260,13 +244,13 @@ public class RevisionActivity extends AppCompatActivity {
 
 
                         if (item5 != null && item5) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item5 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item5 = true;
 
                         }
@@ -274,13 +258,13 @@ public class RevisionActivity extends AppCompatActivity {
                     } else if (finalI == 5) {
 
                         if (item6 != null && item6) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item6 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item6 = true;
 
                         }
@@ -289,13 +273,13 @@ public class RevisionActivity extends AppCompatActivity {
                     } else if (finalI == 6) {
 
                         if (item7 != null && item7) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item7 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item7 = true;
 
                         }
@@ -304,13 +288,13 @@ public class RevisionActivity extends AppCompatActivity {
 
 
                         if (item8 != null && item8) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item8 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item8 = true;
 
                         }
@@ -318,36 +302,31 @@ public class RevisionActivity extends AppCompatActivity {
                     } else if (finalI == 8) {
 
                         if (item9 != null && item9) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item9 = false;
 
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item9 = true;
                         }
 
                     } else if (finalI == 9) {
                         if (item10 != null && item10) {
-                            tasks.remove(tasca[finalI]);
+                            tasks.remove(product[finalI]);
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             item10 = false;
 
                         } else {
                             cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreen));
-                            tasks.add(tasca[finalI]);
+                            tasks.add(product[finalI]);
                             item10 = true;
 
 
                         }
                     }
-
-                    for (Products tasa : tasks) {
-                        System.out.print(tasa.getId() + " ");
-                    }
-                    System.out.println("\n");
                 }
             });
 
@@ -357,24 +336,29 @@ public class RevisionActivity extends AppCompatActivity {
     }
 
 
-    public void generateTasks() {
-        tasca = new Products[10];
-        for (int i = 0; i < tasca.length; i++) {
-            tasca[i] = new Products();
-        }
+    public void init() {
 
-        //tasks
-        tasca[0] = new Products(1, "Direction", "Revision de sistemas y mecanismos", 100);
-        tasca[1] = new Products(2, "Brakes", "Cambio de Pastillas y Discos", 150);
-        tasca[2] = new Products(3, "Suspension", "Revisión y cambio de Amortiguadores", 120);
-        tasca[3] = new Products(4, "Pneumatic", "Revisión y Camio de Neumaticos", 80);
-        tasca[4] = new Products(5, "Lights", "Revisión y Camio de luces", 90);
-        tasca[5] = new Products(6, "Batery", "Revision, Carga, Cambio de bateria", 20);
-        tasca[6] = new Products(7, "Levels and Filters", "Revisión y cambio de Niveles y Filtros", 110);
-        tasca[7] = new Products(8, "Air Conditioner", "Revisión del Aire Acondicionado", 40);
-        tasca[8] = new Products(9, "Moons and CrystalCleaner", "Revisión y cambio de Limpia Cristales", 70);
-        tasca[9] = new Products(10, "Injection", "Revisión y cambio de Inyectores", 120);
+        //crear array con posiciones fijas (10 productos en total)
+        product = new Products[10];
 
+        //inicializar productos
+        product[0] = new Products(1L, "Direction", "Revision de sistemas y mecanismos", 100);
+        product[1] = new Products(2L, "Brakes", "Cambio de Pastillas y Discos", 150);
+        product[2] = new Products(3L, "Suspension", "Revisión y cambio de Amortiguadores", 120);
+        product[3] = new Products(4L, "Pneumatic", "Revisión y Camio de Neumaticos", 80);
+        product[4] = new Products(5L, "Lights", "Revisión y Camio de luces", 90);
+        product[5] = new Products(6L, "Batery", "Revision, Carga, Cambio de bateria", 20);
+        product[6] = new Products(7L, "Levels and Filters", "Revisión y cambio de Niveles y Filtros", 110);
+        product[7] = new Products(8L, "Air Conditioner", "Revisión del Aire Acondicionado", 40);
+        product[8] = new Products(9L, "Moons and CrystalCleaner", "Revisión y cambio de Limpia Cristales", 70);
+        product[9] = new Products(10L, "Injection", "Revisión y cambio de Inyectores", 120);
+
+
+        //obtener extras
+        idFactura=getIntent().getLongExtra("idFactura",Integer.MAX_VALUE);
+        carData=getIntent().getStringExtra("car");
+        servicios =getIntent().getStringArrayListExtra("servicios");
+        client=getIntent().getStringExtra("client");
 
     }
 

@@ -16,22 +16,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Vistas.Activities.MainActivity">
+        <activity android:name=".Vistas.Activities.MainActivity"></activity>
+        <activity android:name=".Vistas.Activities.SplashActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".Vistas.Activities.SplashActivity" />
         <activity
             android:name=".Vistas.Activities.MantenimientoActivity"
-            android:theme="@style/normalTheme"></activity>
+            android:theme="@style/normalTheme" />
         <activity android:name=".Vistas.Activities.EmergencyActivity"></activity>
-        <activity android:name=".Login.RegisLoginActivity"></activity>
-        <activity android:name=".Vistas.Activities.CochesActivity"></activity>
-        <activity android:name=".Login.MainImage"></activity>
-        <activity android:name=".Vistas.Activities.RevisionActivity"></activity>
+        <activity android:name=".Login.RegisLoginActivity">
+
+        </activity>
+        <activity android:name=".Vistas.Activities.CochesActivity" />
+        <activity android:name=".Login.MainImage" />
+        <activity android:name=".Vistas.Activities.RevisionActivity" />
+        <activity android:name=".Vistas.Activities.ItvActivity" />
+        <activity android:name=".Vistas.Activities.MechanicActivity"></activity>
     </application>
 
 </manifest>

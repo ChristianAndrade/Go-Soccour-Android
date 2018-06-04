@@ -16,44 +16,128 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import gosoccour.com.gosuccour.R;
 import gosoccour.com.gosuccour.data.ApiUtils;
 import gosoccour.com.gosuccour.interfaces.APIService;
+import gosoccour.com.gosuccour.models.Mechanic;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class EmergencyActivity extends AppCompatActivity {
-    TextView mensaje1,mensaje2, mensaje3;
+    //TextView mensaje1, mensaje2, mensaje3;
     Localizacion Local;
+    LocationManager mlocManager;
+    ImageView imageView;
+    Coordenadas coordenadas;
+    private String client, carData;
+    private Long idFactura;
+    private ArrayList<String> servicios;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency);
-
+        mlocManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //obtener extras
+        client=getIntent().getStringExtra("client");
+        servicios=getIntent().getStringArrayListExtra("servicios");
+        idFactura=getIntent().getLongExtra("idFactura",Integer.MAX_VALUE);
+        carData=getIntent().getStringExtra("car");
+        //permisos
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location lastLocation = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+      /*
         mensaje1 = (TextView) findViewById(R.id.texto1);
         mensaje2 = (TextView) findViewById(R.id.texto2);
         mensaje3 = (TextView) findViewById(R.id.texto3);
-
+*/
+        //  codigo para pedir permisos, va junto al codigo comentado de abajo
+/*
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         } else {
             locationStart();
         }
+*/
+/*
+        mensaje2.setText(lastLocation.getLatitude()+"");
+        mensaje3.setText(lastLocation.getLongitude()+"");
+*/
+        imageView = (ImageView)findViewById(R.id.boton_emergencia);
+
+        imageView.bringToFront();
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                coordenadas = new Coordenadas();
+
+                coordenadas.setLatitude(lastLocation.getLatitude());
+                coordenadas.setLongitude(lastLocation.getLongitude());
+
+                APIService apiService = ApiUtils.getAPIService();
+
+                apiService.getMechanic(coordenadas.getLatitude(),coordenadas.getLongitude()).enqueue(new Callback<Mechanic>() {
+                    @Override
+                    public void onResponse(Call<Mechanic> call, Response<Mechanic> response) {
+
+                        if(response.isSuccessful()){
+                            Log.e("Success", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));                        }
+                        Toast.makeText(EmergencyActivity.this, "Peticion de emergencia enviada!", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(),MechanicActivity.class);
+                        i.putExtra("client",client);
+                        i.putExtra("idFactura",idFactura);
+                        Gson gson = new Gson();
+                        i.putExtra("mechanic",gson.toJson(response.body()));
+                        servicios =getIntent().getStringArrayListExtra("servicios");
+                        i.putStringArrayListExtra("servicios",servicios);
+                        i.putExtra("car",carData);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Mechanic> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Fallo!!!", Toast.LENGTH_SHORT).show();
+                        t.printStackTrace();
+                    }
+                });
+
+
+            }
+        });
+
+
+
+
     }
 
+    //Codi per obtenir la localitzacio actualitzada cada X milisegons
+
     private void locationStart() {
-        LocationManager mlocManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+         mlocManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         boolean networkProviderExists = false;
         if(mlocManager.getAllProviders().contains("network")){
             networkProviderExists  = true;
@@ -70,15 +154,16 @@ public class EmergencyActivity extends AppCompatActivity {
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,}, 1000);
             return;
         }
         //mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
         mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,100000,0,(LocationListener)Local);
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100000, 0, (LocationListener) Local);
-
+/*
         mensaje1.setText("Localización agregada");
         mensaje2.setText("");
-
+*/
         //setLocation(Local);
     }
 
@@ -100,8 +185,10 @@ public class EmergencyActivity extends AppCompatActivity {
                         loc.getLatitude(), loc.getLongitude(), 1);
                 if (!list.isEmpty()) {
                     Address DirCalle = list.get(0);
+                    /*
                     mensaje2.setText("Mi direccion es: \n"
                             + DirCalle.getAddressLine(0));
+                            */
                 }
 
             } catch (IOException e) {
@@ -111,14 +198,7 @@ public class EmergencyActivity extends AppCompatActivity {
     }
 
 
-    public void showResponse(String response) {
-        if(mensaje3.getVisibility() == View.GONE) {
-            mensaje3.setVisibility(View.VISIBLE);
-        }
-        mensaje3.setText(response);
-    }
-
-    /* Aqui empieza la Clase Localizacion */
+    // Aqui empieza la Clase Localizacion
     public class Localizacion implements LocationListener {
         EmergencyActivity emergencyActivity;
 
@@ -140,46 +220,21 @@ public class EmergencyActivity extends AppCompatActivity {
 
             String Text = "Mi ubicacion actual es: " + "\n Lat = "
                     + loc.getLatitude() + "\n Long = " + loc.getLongitude();
-            mensaje1.setText(Text);
+            //mensaje1.setText(Text);
             this.emergencyActivity.setLocation(loc);
 
             Coordenadas coordenadas = new Coordenadas();
 
-            coordenadas.setToken("ERTGERGSDF3434534TRF23");
-            coordenadas.setLatitude(123123.32);
-            coordenadas.setLongitude(123123.134);
+            coordenadas.setLatitude(loc.getLatitude());
+            coordenadas.setLongitude(loc.getLongitude());
 
             APIService apiService = ApiUtils.getAPIService();
-/*
-            Products tasca = new Products(1,"Direction","Revision de sistemas y mecanismos",100);
-
-            List<Products> lista= new ArrayList<>();
-            lista.add(tasca);
-
-            Maintenance mantenimientoPost= new Maintenance("1",123.0,"mantenimiento",lista);
-
-            apiService.savePostMantenimiento(mantenimientoPost).enqueue(new Callback<Maintenance>() {
-                @Override
-                public void onResponse(Call<Maintenance> call, Response<Maintenance> response) {
-                    if(response.isSuccessful()){
-                        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Maintenance> call, Throwable t) {
-
-                }
-            });
-*/
-
 
             apiService.sendCoordenadas(coordenadas).enqueue(new Callback<Coordenadas>() {
                 @Override
                 public void onResponse(Call<Coordenadas> call, Response<Coordenadas> response) {
                     //Coordenadas coordenadas1=response.body();
                     Toast.makeText(emergencyActivity, "Entra en el response", Toast.LENGTH_SHORT).show();
-                    showResponse(new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
 
                     if(response.isSuccessful()){
                         Toast.makeText(emergencyActivity, new GsonBuilder().setPrettyPrinting().create().toJson(response.body()), Toast.LENGTH_SHORT).show();
@@ -189,37 +244,21 @@ public class EmergencyActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Coordenadas> call, Throwable t) {
                     Toast.makeText(emergencyActivity, "Fallo!!!", Toast.LENGTH_SHORT).show();
-                        t.printStackTrace();
+                    t.printStackTrace();
                 }
             });
-            /*
-
-
-            JSONObject json = new JSONObject();
-
-            try {
-                String latitud = String.valueOf(json.put("latitude", loc.getLatitude()));
-                String longitud = String.valueOf(json.put("longitude",loc.getLongitude()));
-
-                Toast.makeText(EmergencyActivity.this, latitud, Toast.LENGTH_SHORT).show();
-                Toast.makeText(EmergencyActivity.this, longitud, Toast.LENGTH_SHORT).show();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            */
-
         }
 
         @Override
         public void onProviderDisabled(String provider) {
             // Este metodo se ejecuta cuando el GPS es desactivado
-            mensaje1.setText("GPS Desactivado");
+            //mensaje1.setText("GPS Desactivado");
         }
 
         @Override
         public void onProviderEnabled(String provider) {
             // Este metodo se ejecuta cuando el GPS es activado
-            mensaje1.setText("GPS Activado");
+            //mensaje1.setText("GPS Activado");
         }
 
         @Override
@@ -237,4 +276,6 @@ public class EmergencyActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

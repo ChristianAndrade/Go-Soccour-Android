@@ -18,22 +18,17 @@
             android:title="Informacion"
             />
 
-        <item android:title="Otras Opciones">
+        <item android:title="Otros">
             <menu>
                 <item
-                    android:id="@+id/menu_opcion_1"
-                    android:icon="@android:drawable/ic_dialog_dialer"
-                    android:title="Comentarios"
-                    />
-                <item
-                    android:id="@+id/menu_opcion_2"
+                    android:id="@+id/aviso_legal"
                     android:icon="@android:drawable/ic_dialog_dialer"
                     android:title="Aviso Legal"
                     />
                 <item
-                    android:id="@+id/menu_opcion_3"
+                    android:id="@+id/cerrar"
                     android:icon="@android:drawable/ic_dialog_dialer"
-                    android:title="Cerrar Sesion"
+                    android:title="Cerrar"
                     />
             </menu>
         </item>

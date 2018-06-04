@@ -61,28 +61,4 @@ public class MainImage extends AppCompatActivity {
 
     }
 
-    public class SavePhotoTask extends AsyncTask<byte[], String, String> {
-
-        @Override
-        protected String doInBackground(byte[]... bytes) {
-            File photo=new File(getApplicationContext().getFilesDir(),"photo.jpg");
-
-            if (photo.exists()) {
-                photo.delete();
-            }
-
-            try {
-                FileOutputStream fos=new FileOutputStream(photo.getPath());
-
-                fos.write(bytes[0]);
-                fos.close();
-            }
-            catch (java.io.IOException e) {
-                Log.e("PictureDemo", "Exception in photoCallback", e);
-            }
-
-            return(null);
-        }
-    }
-
 }

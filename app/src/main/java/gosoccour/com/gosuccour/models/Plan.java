@@ -1,14 +1,21 @@
 package gosoccour.com.gosuccour.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
- * Created by alguien on 05/31/2018.
+ * Created by mohamed on 05/31/2018.
  */
 
 public class Plan {
 
 
+    @SerializedName("name")
+    @Expose
     private String name;
 
+    @SerializedName("porcentaje")
+    @Expose
     private Double porcentaje;
 
 

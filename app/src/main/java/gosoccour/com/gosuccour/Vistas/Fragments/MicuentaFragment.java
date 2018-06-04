@@ -57,7 +57,8 @@ public class MicuentaFragment extends Fragment {
         AdaptadorMiCuenta adapter = new AdaptadorMiCuenta(getFragmentManager());
         adapter.addFragment(new PerfilFragment(), getString(R.string.titulo_tab_perfil));
         adapter.addFragment(new CochesFragment(), getString(R.string.titulo_tab_coches));
-        adapter.addFragment(new FacturasFragment(), getString(R.string.titulo_tab_facturas));
+        //adapter.addFragment(new FacturasFragment(), getString(R.string.titulo_tab_facturas));
+        //no hemos podido acabar esta secion por falta de tiempo e imprevistos que nos han atrasado
         viewPager.setAdapter(adapter);
     }
 
